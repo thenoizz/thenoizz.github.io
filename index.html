@@ -78,7 +78,7 @@ a:active {
   };
 
   $(document).ready(function() {
-    $(document).on('click touch', function () {
+    $(document).on('click touchstart', function () {
       $('body').each(function() {
         $(this).css('background-color', randomColor());
       });
