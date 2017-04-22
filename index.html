@@ -78,7 +78,7 @@ a:active {
   };
 
   $(document).ready(function() {
-    $(document).click(function() {
+    $(document).on('click touch', function () {
       $('body').each(function() {
         $(this).css('background-color', randomColor());
       });
@@ -93,7 +93,6 @@ a:active {
 <div class="place">
   <div class="inside">
     <p>
-
 		<svg width="400px" height="81px" viewBox="0 0 400 81" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 		    <defs></defs>
 		    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
