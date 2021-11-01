@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="72px" height="72px" viewBox="0 0 72 72" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>icons/status/error_72</title>
+    <defs>
+        <linearGradient x1="50%" y1="25.0738736%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#FFFFFF" stop-opacity="0.5" offset="0%"></stop>
+            <stop stop-color="#606060" stop-opacity="0.5" offset="100%"></stop>
+        </linearGradient>
+        <circle id="path-2" cx="36" cy="36" r="36"></circle>
+    </defs>
+    <g id="icons/status/error_72" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Oval-2">
+            <use fill="#F0094E" xlink:href="#path-2"></use>
+            <use fill-opacity="0.7" fill="url(#linearGradient-1)" style="mix-blend-mode: multiply;" xlink:href="#path-2"></use>
+        </g>
+        <path d="M51.5532622,18.3363696 C52.142423,17.8558416 53.0114854,17.890165 53.5606602,18.4393398 C54.1464466,19.0251263 54.1464466,19.9748737 53.5606602,20.5606602 L53.5606602,20.5606602 L38.121,36 L53.5606602,51.4393398 C54.1464466,52.0251263 54.1464466,52.9748737 53.5606602,53.5606602 C53.0114854,54.109835 52.142423,54.1441584 51.5532622,53.6636304 L51.4393398,53.5606602 L36,38.121 L20.5606602,53.5606602 L20.4467378,53.6636304 C19.857577,54.1441584 18.9885146,54.109835 18.4393398,53.5606602 C17.8535534,52.9748737 17.8535534,52.0251263 18.4393398,51.4393398 L18.4393398,51.4393398 L33.879,36 L18.4393398,20.5606602 C17.8535534,19.9748737 17.8535534,19.0251263 18.4393398,18.4393398 C18.9885146,17.890165 19.857577,17.8558416 20.4467378,18.3363696 L20.5606602,18.4393398 L36,33.879 L51.4393398,18.4393398 Z" id="Combined-Shape" fill="#FFFFFF"></path>
+    </g>
+</svg>
