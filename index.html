@@ -1,13 +1,43 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="en">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <script type="text/javascript" src="js/jquery.js"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+
+    <title>paslaru.org</title>
+    <meta name="description" content="paslaru.org" />
+    <meta name="author" content="Paslaru" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://paslaru.org/" />
+    <meta property="og:title" content="paslaru.org" />
+    <meta property="og:description" content="paslaru.org" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="paslaru.org" />
+    <meta name="twitter:description" content="paslaru.org" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23111' width='100' height='100'/><text y='70' x='50' text-anchor='middle' font-size='60' fill='white'>P</text></svg>" />
+
+    <!-- Theme color for mobile browsers -->
+    <meta name="theme-color" content="#151520" />
+
     <link rel="stylesheet" href="css/font-awesome.min.css" />
-    <title>
-      paslaru.org-paslaru.org-paslaru.org-paslaru.org-paslaru.org-paslaru.org-paslaru.org-paslaru.org-paslaru.org-paslaru.org-paslaru.org-paslaru.org
-    </title>
-    <style type="text/css">
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        cursor: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="20" viewBox="0 0 12 20"><rect x="0" y="0" width="12" height="20" fill="white" fill-opacity="0.9"/></svg>') 6 10, auto;
+      }
+
+      a, a:hover, .fa {
+        cursor: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="20" viewBox="0 0 12 20"><rect x="0" y="0" width="12" height="20" fill="%2300ff00" fill-opacity="0.9"/></svg>') 6 10, pointer;
+      }
+
       body,
       td,
       th {
@@ -15,8 +45,36 @@
         font-size: 25pt;
         color: #fff;
       }
+
       body {
-        background-color: #ff2d55;
+        background-color: #0a0a0a;
+        overflow: hidden;
+      }
+
+      #glitch-canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: -1;
+      }
+
+      .scanlines {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        pointer-events: none;
+        z-index: 1;
+        background: repeating-linear-gradient(
+          0deg,
+          rgba(0, 0, 0, 0.4) 0px,
+          rgba(0, 0, 0, 0.4) 1px,
+          transparent 1px,
+          transparent 2px
+        );
       }
 
       .unselectable {
@@ -29,11 +87,13 @@
       }
 
       .place {
+        position: relative;
         display: flex;
         align-items: center;
         text-align: center;
         height: 100vh;
         width: auto;
+        z-index: 2;
       }
 
       .inside {
@@ -56,8 +116,122 @@
         text-decoration: none;
         color: #ffffff;
       }
+
+      /* Link glitch on hover */
+      .social-links a:hover .fa {
+        text-shadow:
+          -2px 0 #ff0000,
+          2px 0 #00ffff;
+      }
+
+      /* Mobile responsive */
+      @media (max-width: 480px) {
+        body, td, th {
+          font-size: 18pt;
+        }
+
+        .social-links a {
+          padding: 10px;
+          min-width: 44px;
+          min-height: 44px;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+        }
+      }
+
+      /* Disable custom cursor on touch devices */
+      @media (pointer: coarse) {
+        * {
+          cursor: auto !important;
+        }
+      }
+
+      /* Logo glitch effect */
+      .logo-glitch {
+        position: relative;
+        display: inline-block;
+        width: min(400px, 85vw);
+        height: auto;
+        aspect-ratio: 400 / 81;
+      }
+
+      .logo-glitch svg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      .logo-glitch svg:first-child {
+        animation: logoGlitch 8s infinite;
+      }
+
+      .logo-glitch .glitch-r,
+      .logo-glitch .glitch-b {
+        pointer-events: none;
+        opacity: 0;
+      }
+
+      .logo-glitch .glitch-r {
+        animation: glitchR 4s infinite;
+        mix-blend-mode: screen;
+      }
+
+      .logo-glitch .glitch-b {
+        animation: glitchB 4s infinite;
+        mix-blend-mode: screen;
+      }
+
+      @keyframes glitchR {
+        0%, 90%, 100% { transform: translate(0, 0); opacity: 0; }
+        91% { transform: translate(-3px, 1px); opacity: 0.7; }
+        92% { transform: translate(2px, -1px); opacity: 0.7; }
+        93% { transform: translate(-1px, 2px); opacity: 0; }
+        94%, 95% { transform: translate(3px, 1px); opacity: 0.7; }
+        96% { transform: translate(-2px, -1px); opacity: 0.7; }
+        97%, 98% { transform: translate(0, 0); opacity: 0; }
+        99% { transform: translate(4px, 0); opacity: 0.7; }
+      }
+
+      @keyframes glitchB {
+        0%, 90%, 100% { transform: translate(0, 0); opacity: 0; }
+        91% { transform: translate(3px, -1px); opacity: 0.7; }
+        92% { transform: translate(-2px, 1px); opacity: 0.7; }
+        93% { transform: translate(1px, -2px); opacity: 0; }
+        94%, 95% { transform: translate(-3px, -1px); opacity: 0.7; }
+        96% { transform: translate(2px, 1px); opacity: 0.7; }
+        97%, 98% { transform: translate(0, 0); opacity: 0; }
+        99% { transform: translate(-4px, 0); opacity: 0.7; }
+      }
+
+      @keyframes logoGlitch {
+        0%, 89%, 91%, 93%, 95%, 100% { transform: translate(0, 0) skewX(0deg); }
+        90% { transform: translate(-2px, 0) skewX(-0.5deg); }
+        92% { transform: translate(2px, 0) skewX(0.5deg); }
+        94% { transform: translate(-1px, 1px) skewX(-0.3deg); }
+      }
+
+      /* Signal loss */
+      .signal-loss {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: #000;
+        z-index: 100;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.05s;
+      }
+
+      .signal-loss.active {
+        opacity: 1;
+      }
     </style>
-    <script type="text/javascript">
+    <script>
       var _gaq = _gaq || [];
       _gaq.push(["_setAccount", "UA-2630966-2"]);
       _gaq.push(["_trackPageview"]);
@@ -74,34 +248,332 @@
         s.parentNode.insertBefore(ga, s);
       })();
 
-      // Colors Rand
-      var safeColors = ["00", "33", "66", "99", "cc", "ff"];
-      var rand = function () {
-        return Math.floor(Math.random() * 6);
-      };
-      var randomColor = function () {
-        var r = safeColors[rand()];
-        var g = safeColors[rand()];
-        var b = safeColors[rand()];
-        return "#" + r + g + b;
-      };
+      // Glitch Animation - Broken CRT TV
+      document.addEventListener("DOMContentLoaded", function () {
+        var canvas = document.getElementById("glitch-canvas");
+        var ctx = canvas.getContext("2d");
+        var mouse = { x: 0.5, y: 0.5 };
+        var prevMouse = { x: 0.5, y: 0.5 };
+        var glitchIntensity = 0;
+        var baseColor = { r: 20, g: 20, b: 35 };
+        var time = 0;
 
-      $(document).ready(function () {
-        // onload
-        $("body").css("background-color", randomColor());
-        // onclick
-        $(document).on("click touchstart", function () {
-          $("body").css("background-color", randomColor());
+        // Performance: Check for reduced motion preference
+        var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        // Performance: Detect low-end devices (rough heuristic)
+        var isLowEnd = navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2;
+
+        // Performance: Pre-generated noise colors
+        var noiseColors = [];
+        for (var i = 0; i < 256; i++) {
+          noiseColors.push("rgba(" + i + "," + i + "," + i + ",");
+        }
+
+        // Performance: Phosphor pattern canvas (static, drawn once)
+        var phosphorCanvas = document.createElement("canvas");
+        var phosphorCtx = phosphorCanvas.getContext("2d");
+        var phosphorReady = false;
+
+        function generatePhosphor(w, h) {
+          phosphorCanvas.width = w;
+          phosphorCanvas.height = h;
+          phosphorCtx.clearRect(0, 0, w, h);
+          var spacing = 3;
+          for (var py = 0; py < h; py += spacing * 2) {
+            for (var px = 0; px < w; px += spacing * 3) {
+              phosphorCtx.fillStyle = "rgb(255,50,50)";
+              phosphorCtx.fillRect(px, py, 1, 1);
+              phosphorCtx.fillStyle = "rgb(50,255,50)";
+              phosphorCtx.fillRect(px + spacing, py, 1, 1);
+              phosphorCtx.fillStyle = "rgb(50,50,255)";
+              phosphorCtx.fillRect(px + spacing * 2, py, 1, 1);
+            }
+          }
+          phosphorReady = true;
+        }
+
+        function randomColor() {
+          var colors = [
+            { r: 25, g: 15, b: 45 },
+            { r: 45, g: 15, b: 25 },
+            { r: 15, g: 35, b: 45 },
+            { r: 35, g: 25, b: 15 },
+            { r: 20, g: 40, b: 30 },
+            { r: 40, g: 20, b: 35 },
+            { r: 15, g: 20, b: 40 },
+            { r: 50, g: 20, b: 20 }
+          ];
+          return colors[Math.floor(Math.random() * colors.length)];
+        }
+
+        function resize() {
+          canvas.width = window.innerWidth;
+          canvas.height = window.innerHeight;
+          generatePhosphor(canvas.width, canvas.height);
+        }
+        resize();
+        window.addEventListener("resize", resize);
+
+        // Performance: Throttle on hidden tab
+        var isVisible = true;
+        document.addEventListener("visibilitychange", function () {
+          isVisible = !document.hidden;
         });
+
+        // Mouse movement for desktop
+        document.addEventListener("mousemove", function (e) {
+          prevMouse.x = mouse.x;
+          prevMouse.y = mouse.y;
+          mouse.x = e.clientX / window.innerWidth;
+          mouse.y = e.clientY / window.innerHeight;
+        });
+
+        // Device orientation for mobile
+        var motionEnabled = false;
+        function handleOrientation(e) {
+          if (!motionEnabled) return;
+          prevMouse.x = mouse.x;
+          prevMouse.y = mouse.y;
+          // beta: front-to-back tilt (-180 to 180), gamma: left-to-right tilt (-90 to 90)
+          var beta = e.beta || 0;
+          var gamma = e.gamma || 0;
+          // Normalize to 0-1 range
+          mouse.x = Math.max(0, Math.min(1, (gamma + 45) / 90));
+          mouse.y = Math.max(0, Math.min(1, (beta + 45) / 90));
+          // Trigger subtle glitch on fast movement
+          var tiltDelta = Math.abs(mouse.x - prevMouse.x) + Math.abs(mouse.y - prevMouse.y);
+          if (tiltDelta > 0.05) {
+            glitchIntensity = Math.min(1, glitchIntensity + tiltDelta * 2);
+          }
+        }
+
+        function enableMotion() {
+          if (typeof DeviceOrientationEvent !== "undefined" && typeof DeviceOrientationEvent.requestPermission === "function") {
+            // iOS 13+ requires permission
+            DeviceOrientationEvent.requestPermission()
+              .then(function (response) {
+                if (response === "granted") {
+                  motionEnabled = true;
+                  window.addEventListener("deviceorientation", handleOrientation);
+                }
+              })
+              .catch(console.error);
+          } else if ("DeviceOrientationEvent" in window) {
+            // Android and older iOS
+            motionEnabled = true;
+            window.addEventListener("deviceorientation", handleOrientation);
+          }
+        }
+
+        // Click/tap handler
+        document.addEventListener("click", function () {
+          glitchIntensity = 1;
+          baseColor = randomColor();
+          // Enable motion on first tap (needed for iOS permission)
+          if (!motionEnabled) {
+            enableMotion();
+          }
+        });
+
+        // Try to enable motion on load for Android
+        if (typeof DeviceOrientationEvent !== "undefined" && typeof DeviceOrientationEvent.requestPermission !== "function") {
+          enableMotion();
+        }
+
+        function drawGlitch() {
+          // Skip rendering when tab is hidden
+          if (!isVisible) {
+            requestAnimationFrame(drawGlitch);
+            return;
+          }
+
+          time += 0.016;
+          glitchIntensity *= 0.96;
+
+          var w = canvas.width;
+          var h = canvas.height;
+
+          // Solid dark background
+          ctx.fillStyle = "rgb(" + baseColor.r + "," + baseColor.g + "," + baseColor.b + ")";
+          ctx.fillRect(0, 0, w, h);
+
+          // Reduced motion: static image only
+          if (reducedMotion) {
+            if (phosphorReady) {
+              ctx.globalAlpha = 0.06;
+              ctx.drawImage(phosphorCanvas, 0, 0);
+              ctx.globalAlpha = 1;
+            }
+            requestAnimationFrame(drawGlitch);
+            return;
+          }
+
+          // Horizontal glitch lines on burst
+          if (glitchIntensity > 0.05) {
+            var numLines = Math.floor(glitchIntensity * 20);
+            for (var k = 0; k < numLines; k++) {
+              var ly = Math.random() * h;
+              var lh = 1 + Math.random() * 4 * glitchIntensity;
+              var lOffset = (Math.random() - 0.5) * glitchIntensity * 100;
+              ctx.fillStyle = "rgba(255,255,255," + (glitchIntensity * 0.3) + ")";
+              ctx.fillRect(lOffset, ly, w, lh);
+            }
+          }
+
+          // RGB split on burst
+          if (glitchIntensity > 0.1) {
+            ctx.globalCompositeOperation = "screen";
+            ctx.globalAlpha = glitchIntensity * 0.2;
+            ctx.fillStyle = "rgb(255,0,0)";
+            ctx.fillRect(-glitchIntensity * 10, 0, w, h);
+            ctx.fillStyle = "rgb(0,255,255)";
+            ctx.fillRect(glitchIntensity * 10, 0, w, h);
+            ctx.globalCompositeOperation = "source-over";
+            ctx.globalAlpha = 1;
+          }
+
+          // CRT static noise (reduced count on low-end devices)
+          var baseNoise = isLowEnd ? 300 : 800;
+          var noiseCount = baseNoise + Math.floor(glitchIntensity * (isLowEnd ? 500 : 1500));
+          for (var n = 0; n < noiseCount; n++) {
+            var nx = Math.random() * w;
+            var ny = Math.random() * h;
+            var brightness = (Math.random() * 200) | 0;
+            var noiseAlpha = 0.15 + Math.random() * 0.2 + glitchIntensity * 0.3;
+            ctx.fillStyle = noiseColors[brightness] + noiseAlpha + ")";
+            ctx.fillRect(nx, ny, 1 + Math.random() * 2, 1);
+          }
+
+          // RGB phosphor dots pattern (pre-rendered)
+          if (phosphorReady) {
+            ctx.globalAlpha = 0.06 + glitchIntensity * 0.1;
+            ctx.drawImage(phosphorCanvas, 0, 0);
+            ctx.globalAlpha = 1;
+          }
+
+          // Horizontal interference bands
+          var numBands = 2 + Math.floor(Math.random() * 3) + Math.floor(glitchIntensity * 5);
+          for (var b = 0; b < numBands; b++) {
+            var bandY = (time * 100 + b * 200) % (h + 100) - 50;
+            var bandH = 20 + Math.random() * 60;
+            ctx.fillStyle = "rgba(255,255,255," + (0.02 + Math.random() * 0.03 + glitchIntensity * 0.1) + ")";
+            ctx.fillRect(0, bandY, w, bandH);
+          }
+
+          // Flicker effect
+          if (Math.random() < 0.1 + glitchIntensity * 0.3) {
+            ctx.fillStyle = "rgba(255,255,255," + (0.02 + Math.random() * 0.04) + ")";
+            ctx.fillRect(0, 0, w, h);
+          }
+
+          // VHS tracking lines - rolling horizontal distortion bands
+          var vhsY = (time * 80) % (h + 200) - 100;
+          var vhsHeight = 30 + Math.sin(time * 2) * 20;
+          ctx.save();
+          ctx.globalAlpha = 0.15 + glitchIntensity * 0.2;
+          // Main tracking band
+          ctx.fillStyle = "rgba(255,255,255,0.1)";
+          ctx.fillRect(0, vhsY, w, vhsHeight);
+          // Distortion lines within band
+          for (var v = 0; v < 8; v++) {
+            var lineY = vhsY + Math.random() * vhsHeight;
+            var offset = (Math.random() - 0.5) * 20;
+            ctx.fillStyle = "rgba(255,255,255," + (0.1 + Math.random() * 0.15) + ")";
+            ctx.fillRect(offset, lineY, w, 1 + Math.random() * 2);
+          }
+          // Color bleed at band edges
+          ctx.globalCompositeOperation = "screen";
+          ctx.fillStyle = "rgba(255,0,100,0.08)";
+          ctx.fillRect(5, vhsY - 2, w, 3);
+          ctx.fillStyle = "rgba(0,200,255,0.08)";
+          ctx.fillRect(-5, vhsY + vhsHeight, w, 3);
+          ctx.globalCompositeOperation = "source-over";
+          ctx.restore();
+
+          // Secondary VHS tracking (slower, larger)
+          var vhs2Y = (time * 30 + 500) % (h + 400) - 200;
+          ctx.globalAlpha = 0.08;
+          ctx.fillStyle = "#fff";
+          ctx.fillRect(0, vhs2Y, w, 60 + Math.sin(time) * 30);
+          ctx.globalAlpha = 1;
+
+          // Random micro-glitch
+          if (Math.random() < 0.005) {
+            glitchIntensity = Math.min(0.3, glitchIntensity + 0.15);
+          }
+
+          prevMouse.x = mouse.x;
+          prevMouse.y = mouse.y;
+
+          requestAnimationFrame(drawGlitch);
+        }
+
+        // Signal loss effect
+        var signalLoss = document.getElementById("signal-loss");
+        var signalLossActive = false;
+
+        function triggerSignalLoss() {
+          if (signalLossActive) return;
+          signalLossActive = true;
+          signalLoss.classList.add("active");
+
+          // Flicker pattern
+          var flickers = [50, 100, 50, 150, 80, 200];
+          var i = 0;
+
+          function flicker() {
+            if (i >= flickers.length) {
+              signalLoss.classList.remove("active");
+              signalLossActive = false;
+              return;
+            }
+            signalLoss.classList.toggle("active");
+            setTimeout(flicker, flickers[i]);
+            i++;
+          }
+          setTimeout(flicker, flickers[0]);
+        }
+
+        // Random signal loss every 15-40 seconds
+        function scheduleSignalLoss() {
+          var delay = 15000 + Math.random() * 25000;
+          setTimeout(function() {
+            triggerSignalLoss();
+            scheduleSignalLoss();
+          }, delay);
+        }
+        setTimeout(scheduleSignalLoss, 8000);
+
+        // Logo RGB split clones
+        var logoContainer = document.getElementById("logo-glitch");
+        var originalSvg = logoContainer.querySelector("svg");
+        if (originalSvg) {
+          // Red channel
+          var redClone = originalSvg.cloneNode(true);
+          redClone.classList.add("glitch-r");
+          redClone.querySelector("path").setAttribute("fill", "#ff0000");
+          logoContainer.appendChild(redClone);
+
+          // Cyan channel
+          var cyanClone = originalSvg.cloneNode(true);
+          cyanClone.classList.add("glitch-b");
+          cyanClone.querySelector("path").setAttribute("fill", "#00ffff");
+          logoContainer.appendChild(cyanClone);
+        }
+
+        drawGlitch();
       });
-      // End Colors Rand
     </script>
   </head>
 
   <body>
+    <div class="signal-loss" id="signal-loss"></div>
+    <canvas id="glitch-canvas"></canvas>
+    <div class="scanlines"></div>
     <div class="place">
       <div class="inside">
-        <p>
+        <div class="logo-glitch" id="logo-glitch">
           <svg
             width="400px"
             height="81px"
@@ -125,9 +597,9 @@
               ></path>
             </g>
           </svg>
-        </p>
+        </div>
 
-        <p class="unselectable">
+        <p class="unselectable social-links">
           <a href="https://www.instagram.com/thenoizz/" target="new"
             ><i class="fa fa-instagram" aria-hidden="true"></i
           ></a>
