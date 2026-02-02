@@ -20,10 +20,15 @@
     <meta name="twitter:description" content="paslaru.org" />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23111' width='100' height='100'/><text y='70' x='50' text-anchor='middle' font-size='60' fill='white'>P</text></svg>" />
+    <link rel="icon" type="image/png" href="/favico.png" />
+    <link rel="apple-touch-icon" href="/favico@3x.png" />
 
-    <!-- Theme color for mobile browsers -->
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json" />
     <meta name="theme-color" content="#151520" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="paslaru" />
 
     <link rel="stylesheet" href="css/font-awesome.min.css" />
     <style>
@@ -617,5 +622,11 @@
         </p>
       </div>
     </div>
+    <script>
+      // Register Service Worker
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js').catch(function() {});
+      }
+    </script>
   </body>
 </html>
