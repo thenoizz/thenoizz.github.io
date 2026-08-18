@@ -260,7 +260,7 @@
         var mouse = { x: 0.5, y: 0.5 };
         var prevMouse = { x: 0.5, y: 0.5 };
         var glitchIntensity = 0;
-        var baseColor = { r: 20, g: 20, b: 35 };
+        var baseColor = { r: 10, g: 10, b: 18 };
         var time = 0;
 
         // Aperiodic drift: sum of incommensurate sines. Smooth, cheap, and
@@ -328,24 +328,92 @@
           phosphorReady = true;
         }
 
+        // The bars now carry the colour, so the underlay drops back to a
+        // set of near-black tints that just warm or cool the picture.
         function randomColor() {
           var colors = [
-            { r: 25, g: 15, b: 45 },
-            { r: 45, g: 15, b: 25 },
-            { r: 15, g: 35, b: 45 },
-            { r: 35, g: 25, b: 15 },
-            { r: 20, g: 40, b: 30 },
-            { r: 40, g: 20, b: 35 },
-            { r: 15, g: 20, b: 40 },
-            { r: 50, g: 20, b: 20 }
+            { r: 10, g: 10, b: 18 },
+            { r: 16, g: 10, b: 12 },
+            { r: 8, g: 14, b: 18 },
+            { r: 14, g: 12, b: 8 },
+            { r: 8, g: 16, b: 13 },
+            { r: 15, g: 9, b: 16 },
+            { r: 8, g: 10, b: 20 },
+            { r: 18, g: 9, b: 9 }
           ];
           return colors[Math.floor(Math.random() * colors.length)];
+        }
+
+        // --- SMPTE colour bars ------------------------------------------
+        // 75% bars, the reverse-blue strip, and the PLUGE row. Rendered once
+        // per resize to an offscreen canvas, then composited at low alpha.
+        var BARS_TOP = [
+          [192, 192, 192], [192, 192, 0], [0, 192, 192], [0, 192, 0],
+          [192, 0, 192], [192, 0, 0], [0, 0, 192]
+        ];
+        var BARS_MID = [
+          [0, 0, 192], [16, 16, 16], [192, 0, 192], [16, 16, 16],
+          [0, 192, 192], [16, 16, 16], [192, 192, 192]
+        ];
+        var barsCanvas = document.createElement("canvas");
+        var barsCtx = barsCanvas.getContext("2d");
+        var barsReady = false;
+        var barOffset = 0;
+        var barAlpha = 0.085;
+
+        function generateBars(w, h) {
+          barsCanvas.width = w;
+          barsCanvas.height = h;
+          barsCtx.clearRect(0, 0, w, h);
+
+          var topH = h * 0.67;
+          var midH = h * 0.08;
+          var barW = w / 7;
+          var i, c;
+
+          // Main bars - rotated by barOffset, so a click re-scrambles them
+          for (i = 0; i < 7; i++) {
+            c = BARS_TOP[(i + barOffset) % 7];
+            barsCtx.fillStyle = "rgb(" + c[0] + "," + c[1] + "," + c[2] + ")";
+            barsCtx.fillRect(i * barW, 0, barW + 1, topH);
+          }
+
+          // Reverse-blue strip
+          for (i = 0; i < 7; i++) {
+            c = BARS_MID[(i + barOffset) % 7];
+            barsCtx.fillStyle = "rgb(" + c[0] + "," + c[1] + "," + c[2] + ")";
+            barsCtx.fillRect(i * barW, topH, barW + 1, midH);
+          }
+
+          // Bottom row: -I, 100% white, +Q, black, PLUGE, black.
+          // Widths follow the real pattern: 5/28 each, then 3 x 1/21, then 1/7.
+          var y = topH + midH;
+          var bh = h - y;
+          var x = 0;
+          var bottom = [
+            [[0, 33, 76], (5 / 28) * w],
+            [[235, 235, 235], (5 / 28) * w],
+            [[50, 0, 106], (5 / 28) * w],
+            [[16, 16, 16], (5 / 28) * w],
+            [[8, 8, 8], w / 21],
+            [[16, 16, 16], w / 21],
+            [[26, 26, 26], w / 21],
+            [[16, 16, 16], w / 7]
+          ];
+          for (i = 0; i < bottom.length; i++) {
+            c = bottom[i][0];
+            barsCtx.fillStyle = "rgb(" + c[0] + "," + c[1] + "," + c[2] + ")";
+            barsCtx.fillRect(x, y, bottom[i][1] + 1, bh);
+            x += bottom[i][1];
+          }
+          barsReady = true;
         }
 
         function resize() {
           canvas.width = window.innerWidth;
           canvas.height = window.innerHeight;
           generatePhosphor(canvas.width, canvas.height);
+          generateBars(canvas.width, canvas.height);
         }
         resize();
         window.addEventListener("resize", resize);
@@ -405,6 +473,9 @@
         document.addEventListener("click", function () {
           glitchIntensity = 1;
           baseColor = randomColor();
+          // Re-scramble the test pattern
+          barOffset = (barOffset + 1 + Math.floor(Math.random() * 6)) % 7;
+          generateBars(canvas.width, canvas.height);
           // Enable motion on first tap (needed for iOS permission)
           if (!motionEnabled) {
             enableMotion();
@@ -441,6 +512,17 @@
             Math.max(0, (baseColor.g + cd * 0.7) | 0) + "," +
             Math.max(0, (baseColor.b + cd * 1.3) | 0) + ")";
           ctx.fillRect(0, 0, w, h);
+
+          // Test pattern, kept dim enough to tint rather than illuminate.
+          // On a burst it tears sideways, like a picture losing horizontal lock.
+          if (barsReady) {
+            var barTear = reducedMotion ? 0 : (Math.random() - 0.5) * glitchIntensity * 50;
+            ctx.globalAlpha = reducedMotion
+              ? barAlpha
+              : barAlpha + unrest * 0.02 + glitchIntensity * 0.14;
+            ctx.drawImage(barsCanvas, barTear, 0);
+            ctx.globalAlpha = 1;
+          }
 
           // Reduced motion: static image only
           if (reducedMotion) {
