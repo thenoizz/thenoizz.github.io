@@ -1,8 +1,11 @@
-const CACHE_NAME = 'paslaru-v5';
+const CACHE_NAME = 'paslaru-v8';
 const ASSETS = [
   '/',
   '/index.html',
+  '/404.html',
   '/manifest.json',
+  '/css/crt.css',
+  '/js/crt.js',
   '/favico.png',
   '/favico@2x.png',
   '/favico@3x.png',
