@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+
+# Legacy Marvel prototype exports and PDFs. Crawling is left open on
+# /portfolio/ deliberately: those pages carry their own noindex tag, and a
+# Disallow here would stop crawlers from ever reading it - which can leave
+# bare URLs in the index instead of removing them.
+# /etc/ is blocked outright because it holds PDFs, and a PDF cannot carry a
+# meta robots tag; on GitHub Pages there is no way to set X-Robots-Tag.
+Disallow: /etc/
+
+Sitemap: https://paslaru.org/sitemap.xml

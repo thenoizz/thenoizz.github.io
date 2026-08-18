@@ -1,0 +1,206 @@
+/* Shared CRT / glitch presentation for index.html and 404.html.
+   Edit here only - both pages load this file. */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  cursor: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="20" viewBox="0 0 12 20"><rect x="0" y="0" width="12" height="20" fill="white" fill-opacity="0.9"/></svg>') 6 10, auto;
+}
+
+a, a:hover, .fa {
+  cursor: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="20" viewBox="0 0 12 20"><rect x="0" y="0" width="12" height="20" fill="%2300ff00" fill-opacity="0.9"/></svg>') 6 10, pointer;
+}
+
+body,
+td,
+th {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 25pt;
+  color: #fff;
+}
+
+body {
+  background-color: #0a0a0a;
+  overflow: hidden;
+}
+
+#glitch-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+}
+
+.scanlines {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 1;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.4) 0px,
+    rgba(0, 0, 0, 0.4) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+}
+
+.unselectable {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.place {
+  position: relative;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  height: 100vh;
+  width: auto;
+  z-index: 2;
+}
+
+.inside {
+  width: 100vw;
+}
+
+a:link {
+  color: #ffffff;
+  text-decoration: none;
+}
+a:visited {
+  text-decoration: none;
+  color: #ffffff;
+}
+a:hover {
+  text-decoration: underline;
+  color: #ffffff;
+}
+a:active {
+  text-decoration: none;
+  color: #ffffff;
+}
+
+/* Link glitch on hover */
+.social-links a:hover .fa {
+  text-shadow:
+    -2px 0 #ff0000,
+    2px 0 #00ffff;
+}
+
+/* Mobile responsive */
+@media (max-width: 480px) {
+  body, td, th {
+    font-size: 18pt;
+  }
+
+  .social-links a {
+    padding: 10px;
+    min-width: 44px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* Disable custom cursor on touch devices */
+@media (pointer: coarse) {
+  * {
+    cursor: auto !important;
+  }
+}
+
+/* Logo glitch effect */
+.logo-glitch {
+  position: relative;
+  display: inline-block;
+  width: min(400px, 85vw);
+  height: auto;
+  aspect-ratio: 400 / 81;
+}
+
+.logo-glitch svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.logo-glitch svg:first-child {
+  animation: logoGlitch 8s infinite;
+}
+
+.logo-glitch .glitch-r,
+.logo-glitch .glitch-b {
+  pointer-events: none;
+  opacity: 0;
+}
+
+.logo-glitch .glitch-r {
+  animation: glitchR 4s infinite;
+  mix-blend-mode: screen;
+}
+
+.logo-glitch .glitch-b {
+  animation: glitchB 4s infinite;
+  mix-blend-mode: screen;
+}
+
+@keyframes glitchR {
+  0%, 90%, 100% { transform: translate(0, 0); opacity: 0; }
+  91% { transform: translate(-3px, 1px); opacity: 0.7; }
+  92% { transform: translate(2px, -1px); opacity: 0.7; }
+  93% { transform: translate(-1px, 2px); opacity: 0; }
+  94%, 95% { transform: translate(3px, 1px); opacity: 0.7; }
+  96% { transform: translate(-2px, -1px); opacity: 0.7; }
+  97%, 98% { transform: translate(0, 0); opacity: 0; }
+  99% { transform: translate(4px, 0); opacity: 0.7; }
+}
+
+@keyframes glitchB {
+  0%, 90%, 100% { transform: translate(0, 0); opacity: 0; }
+  91% { transform: translate(3px, -1px); opacity: 0.7; }
+  92% { transform: translate(-2px, 1px); opacity: 0.7; }
+  93% { transform: translate(1px, -2px); opacity: 0; }
+  94%, 95% { transform: translate(-3px, -1px); opacity: 0.7; }
+  96% { transform: translate(2px, 1px); opacity: 0.7; }
+  97%, 98% { transform: translate(0, 0); opacity: 0; }
+  99% { transform: translate(-4px, 0); opacity: 0.7; }
+}
+
+@keyframes logoGlitch {
+  0%, 89%, 91%, 93%, 95%, 100% { transform: translate(0, 0) skewX(0deg); }
+  90% { transform: translate(-2px, 0) skewX(-0.5deg); }
+  92% { transform: translate(2px, 0) skewX(0.5deg); }
+  94% { transform: translate(-1px, 1px) skewX(-0.3deg); }
+}
+
+/* Signal loss */
+.signal-loss {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #000;
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.05s;
+}
+
+.signal-loss.active {
+  opacity: 1;
+}

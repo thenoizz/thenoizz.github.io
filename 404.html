@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+
+    <title>No signal &mdash; paslaru.org</title>
+    <meta name="description" content="Page not found on paslaru.org." />
+    <meta name="robots" content="noindex" />
+
+    <!-- Absolute paths only: GitHub Pages serves this file for any missing
+         path, so relative URLs would resolve against the requested path. -->
+    <link rel="icon" type="image/png" href="/favico.png" />
+    <link rel="apple-touch-icon" href="/favico@3x.png" />
+
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#151520" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <link rel="stylesheet" href="/css/crt.css" />
+    <script src="/js/crt.js" defer></script>
+
+    <style>
+      /* 404-only additions; the CRT background comes from crt.css */
+
+      .code {
+        position: relative;
+        display: inline-block;
+        font-size: clamp(72px, 22vw, 190px);
+        font-weight: bold;
+        letter-spacing: -0.03em;
+        line-height: 1;
+        animation: logoGlitch 8s infinite;
+      }
+
+      /* Same red/cyan split the wordmark gets, driven by the shared keyframes */
+      .code::before,
+      .code::after {
+        content: attr(data-text);
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        pointer-events: none;
+        opacity: 0;
+        mix-blend-mode: screen;
+      }
+      .code::before {
+        color: #ff0000;
+        animation: glitchR 4s infinite;
+      }
+      .code::after {
+        color: #00ffff;
+        animation: glitchB 4s infinite;
+      }
+
+      .lost {
+        font-size: clamp(15px, 3.6vw, 21px);
+        opacity: 0.75;
+        margin-top: 6px;
+      }
+
+      .home {
+        display: inline-block;
+        margin-top: 30px;
+        padding: 12px 22px;
+        min-height: 44px;
+        border: 1px solid rgba(255, 255, 255, 0.35);
+        font-size: 15px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      .home:hover {
+        background: rgba(255, 255, 255, 0.1);
+        text-decoration: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="signal-loss" id="signal-loss"></div>
+    <canvas id="glitch-canvas"></canvas>
+    <div class="scanlines"></div>
+    <div class="place">
+      <div class="inside">
+        <p class="code unselectable" data-text="404">404</p>
+        <p class="lost unselectable">No signal on this channel.</p>
+        <a class="home" href="/">Back to paslaru.org</a>
+      </div>
+    </div>
+  </body>
+</html>
