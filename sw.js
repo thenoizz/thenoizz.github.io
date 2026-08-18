@@ -1,4 +1,4 @@
-const CACHE_NAME = 'paslaru-v8';
+const CACHE_NAME = 'paslaru-v9';
 const ASSETS = [
   '/',
   '/index.html',
@@ -6,9 +6,11 @@ const ASSETS = [
   '/manifest.json',
   '/css/crt.css',
   '/js/crt.js',
-  '/favico.png',
-  '/favico@2x.png',
-  '/favico@3x.png',
+  '/favicon.ico',
+  '/favicon.svg',
+  '/apple-touch-icon.png',
+  '/icon-192.png',
+  '/icon-512.png',
   '/css/font-awesome.min.css',
   '/fonts/fontawesome-webfont.woff2',
   '/fonts/fontawesome-webfont.woff',
